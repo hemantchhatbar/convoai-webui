@@ -93,7 +93,7 @@
       width = "320px",
       height = "400px",
     }) {
-      // Apply CSS variables
+      // Set CSS variables
       document.documentElement.style.setProperty("--bizzai-color", color);
       document.documentElement.style.setProperty("--bizzai-width", width);
       document.documentElement.style.setProperty("--bizzai-height", height);
@@ -126,11 +126,38 @@
         chatButton.innerText = isOpen ? "💬" : "✖";
       };
 
+      // Generate UUID v4
+      function uuidv4() {
+        return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+          (
+            c ^
+            (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+          ).toString(16)
+        );
+      }
+
+      // Get or generate userId
+      let userId = localStorage.getItem("bizzai-user-id");
+      if (!userId) {
+        userId = uuidv4();
+        localStorage.setItem("bizzai-user-id", userId);
+      }
+
       function sendMessage() {
         const text = input.value.trim();
         if (!text) return;
+
         appendMessage("user", text);
         input.value = "";
+
+        const messagePayload = {
+          userId,
+          messageId: uuidv4(),
+          messageType: "text",
+          product: "ConvoAi-WebUI",
+          category: "DM",
+          messageText: text,
+        };
 
         fetch(backendUrl, {
           method: "POST",
@@ -138,7 +165,7 @@
             "Content-Type": "application/json",
             Authorization: `Bearer ${apiKey}`,
           },
-          body: JSON.stringify({ message: text }),
+          body: JSON.stringify(messagePayload),
         })
           .then((res) => res.json())
           .then((res) => appendMessage("bot", res.reply || "No reply"))
