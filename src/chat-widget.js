@@ -26,7 +26,7 @@
       border: 1px solid #ccc;
       border-radius: 10px;
       background: white;
-      display: flex;
+      display: none;
       flex-direction: column;
       box-shadow: 0 6px 16px rgba(0,0,0,0.3);
       overflow: hidden;
@@ -42,7 +42,7 @@
       justify-content: space-between;
       align-items: center;
     }
-    .bizzai-chat-clear {
+    .bizzai-clear-button {
       background: transparent;
       border: none;
       color: white;
@@ -77,7 +77,9 @@
     .bizzai-chat-timestamp {
       font-size: 10px;
       color: #888;
-      margin-top: 4px;
+      position: absolute;
+      bottom: -14px;
+      right: 8px;
     }
     .bizzai-chat-input {
       display: flex;
@@ -120,11 +122,10 @@
 
       const chatBox = document.createElement("div");
       chatBox.className = "bizzai-chat-box";
-      chatBox.style.display = "none";
       chatBox.innerHTML = `
         <div class="bizzai-chat-header">
-          <span>${headerText}</span>
-          <button class="bizzai-chat-clear">🗑️</button>
+          ${headerText}
+          <button class="bizzai-clear-button">Clear</button>
         </div>
         <div class="bizzai-chat-messages" id="bizzai-chat-messages"></div>
         <div class="bizzai-chat-input">
@@ -137,17 +138,13 @@
       const messages = chatBox.querySelector("#bizzai-chat-messages");
       const input = chatBox.querySelector("input");
       const button = chatBox.querySelector("button");
-      const clearBtn = chatBox.querySelector(".bizzai-chat-clear");
+      const clearBtn = chatBox.querySelector(".bizzai-clear-button");
 
       chatButton.onclick = () => {
         const isOpen = chatBox.style.display === "flex";
         chatBox.style.display = isOpen ? "none" : "flex";
         chatButton.innerText = isOpen ? "💬" : "✖";
-      };
-
-      clearBtn.onclick = () => {
-        messages.innerHTML = "";
-        localStorage.removeItem("bizzai-chat-history");
+        if (!isOpen) renderStoredMessages(); // Load only once per open
       };
 
       function uuidv4() {
@@ -165,68 +162,66 @@
         localStorage.setItem("bizzai-user-id", userId);
       }
 
-      function appendMessage(sender, text, timestamp = new Date()) {
-        const msg = document.createElement("div");
-        msg.className = `bizzai-chat-message bizzai-${sender}-message`;
-        msg.innerHTML = `${text}<div class="bizzai-chat-timestamp">${new Date(
-          timestamp
-        ).toLocaleTimeString([], {
+      let messageHistory = [];
+
+      function saveMessage(sender, text, timestamp) {
+        messageHistory.push({ sender, text, timestamp });
+        localStorage.setItem("bizzai-history", JSON.stringify(messageHistory));
+      }
+
+      function renderStoredMessages() {
+        messages.innerHTML = "";
+        messageHistory = JSON.parse(
+          localStorage.getItem("bizzai-history") || "[]"
+        );
+        messageHistory.forEach(({ sender, text, timestamp }) => {
+          appendMessage(sender, text, timestamp);
+        });
+      }
+
+      function getTimeStamp() {
+        return new Date().toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
-        })}</div>`;
+        });
+      }
+
+      function appendMessage(sender, text, timestamp = getTimeStamp()) {
+        const msg = document.createElement("div");
+        msg.className = `bizzai-chat-message bizzai-${sender}-message`;
+        msg.textContent = text;
+
+        const time = document.createElement("div");
+        time.className = "bizzai-chat-timestamp";
+        time.textContent = timestamp;
+
+        msg.appendChild(time);
         messages.appendChild(msg);
         messages.scrollTop = messages.scrollHeight;
-
-        saveMessageToHistory(sender, text, timestamp);
-      }
-
-      function saveMessageToHistory(sender, text, timestamp) {
-        const history = JSON.parse(
-          localStorage.getItem("bizzai-chat-history") || "[]"
-        );
-        history.push({ sender, text, timestamp });
-        localStorage.setItem("bizzai-chat-history", JSON.stringify(history));
-      }
-
-      function loadMessageHistory() {
-        const history = JSON.parse(
-          localStorage.getItem("bizzai-chat-history") || "[]"
-        );
-        history.forEach(({ sender, text, timestamp }) =>
-          appendMessage(sender, text, timestamp)
-        );
-      }
-
-      function showTypingIndicator() {
-        const typing = document.createElement("div");
-        typing.className = "bizzai-chat-message bizzai-bot-message";
-        typing.id = "bizzai-typing";
-        typing.textContent = "Bot is typing...";
-        messages.appendChild(typing);
-        messages.scrollTop = messages.scrollHeight;
-      }
-
-      function removeTypingIndicator() {
-        const typing = document.getElementById("bizzai-typing");
-        if (typing) typing.remove();
+        saveMessage(sender, text, timestamp);
       }
 
       function sendMessage() {
         const text = input.value.trim();
         if (!text) return;
 
-        appendMessage("user", text);
+        const timestamp = getTimeStamp();
+        appendMessage("user", text, timestamp);
         input.value = "";
 
-        showTypingIndicator();
+        const botTyping = document.createElement("div");
+        botTyping.className = "bizzai-chat-message bizzai-bot-message";
+        botTyping.textContent = "Typing...";
+        messages.appendChild(botTyping);
+        messages.scrollTop = messages.scrollHeight;
 
-        const payload = {
+        const messagePayload = {
           userId,
           messageId: uuidv4(),
           messageType: "text",
           product: "ConvoAi-WebUI",
           category: "DM",
-          message: text,
+          messageText: text,
         };
 
         fetch(backendUrl, {
@@ -235,15 +230,15 @@
             "Content-Type": "application/json",
             Authorization: `Bearer ${apiKey}`,
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(messagePayload),
         })
           .then((res) => res.json())
           .then((res) => {
-            removeTypingIndicator();
+            messages.removeChild(botTyping);
             appendMessage("bot", res.reply || "No reply");
           })
           .catch(() => {
-            removeTypingIndicator();
+            messages.removeChild(botTyping);
             appendMessage("bot", "⚠️ Could not connect to server.");
           });
       }
@@ -256,7 +251,11 @@
         }
       });
 
-      loadMessageHistory();
+      clearBtn.onclick = () => {
+        localStorage.removeItem("bizzai-history");
+        messageHistory = [];
+        messages.innerHTML = "";
+      };
     },
   };
 
