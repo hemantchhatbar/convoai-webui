@@ -58,13 +58,18 @@
       flex-direction: column;
     }
     .bizzai-chat-message {
-      margin: 6px 0;
-      padding: 8px 12px;
+      margin: 10px 0;
+      padding: 8px 12px 18px;
       border-radius: 12px;
       max-width: 80%;
+      min-width: 60px;
       clear: both;
       word-wrap: break-word;
       position: relative;
+      display: flex;              /* Ensures layout inside the bubble */
+      flex-direction: column;    /* Stack text and timestamp */
+      align-items: flex-end;   /* Align all content to the left */
+      font-size: 14px;
     }
     .bizzai-user-message {
       align-self: flex-end;
@@ -78,7 +83,7 @@
       font-size: 10px;
       color: #888;
       position: absolute;
-      bottom: -14px;
+      bottom: 2px;
       right: 8px;
     }
     .bizzai-chat-input {
@@ -127,24 +132,24 @@
           ${headerText}
           <button class="bizzai-clear-button">Clear</button>
         </div>
-        <div class="bizzai-chat-messages" id="bizzai-chat-messages"></div>
+        <div class="bizzai-chat-messages"></div>
         <div class="bizzai-chat-input">
           <input type="text" placeholder="Type a message..." />
-          <button>Send</button>
+          <button class="bizzai-send-btn">Send</button>
         </div>
       `;
       document.body.appendChild(chatBox);
 
-      const messages = chatBox.querySelector("#bizzai-chat-messages");
+      const messages = chatBox.querySelector(".bizzai-chat-messages");
       const input = chatBox.querySelector("input");
-      const button = chatBox.querySelector("button");
+      const sendBtn = chatBox.querySelector(".bizzai-send-btn");
       const clearBtn = chatBox.querySelector(".bizzai-clear-button");
 
       chatButton.onclick = () => {
         const isOpen = chatBox.style.display === "flex";
         chatBox.style.display = isOpen ? "none" : "flex";
         chatButton.innerText = isOpen ? "💬" : "✖";
-        if (!isOpen) renderStoredMessages(); // Load only once per open
+        if (!isOpen) renderStoredMessages();
       };
 
       function uuidv4() {
@@ -164,6 +169,13 @@
 
       let messageHistory = [];
 
+      function getTimeStamp() {
+        return new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+
       function saveMessage(sender, text, timestamp) {
         messageHistory.push({ sender, text, timestamp });
         localStorage.setItem("bizzai-history", JSON.stringify(messageHistory));
@@ -175,18 +187,16 @@
           localStorage.getItem("bizzai-history") || "[]"
         );
         messageHistory.forEach(({ sender, text, timestamp }) => {
-          appendMessage(sender, text, timestamp);
+          appendMessage(sender, text, timestamp, false);
         });
       }
 
-      function getTimeStamp() {
-        return new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        });
-      }
-
-      function appendMessage(sender, text, timestamp = getTimeStamp()) {
+      function appendMessage(
+        sender,
+        text,
+        timestamp = getTimeStamp(),
+        save = true
+      ) {
         const msg = document.createElement("div");
         msg.className = `bizzai-chat-message bizzai-${sender}-message`;
         msg.textContent = text;
@@ -198,7 +208,8 @@
         msg.appendChild(time);
         messages.appendChild(msg);
         messages.scrollTop = messages.scrollHeight;
-        saveMessage(sender, text, timestamp);
+
+        if (save) saveMessage(sender, text, timestamp);
       }
 
       function sendMessage() {
@@ -207,12 +218,13 @@
 
         const timestamp = getTimeStamp();
         appendMessage("user", text, timestamp);
+
         input.value = "";
 
-        const botTyping = document.createElement("div");
-        botTyping.className = "bizzai-chat-message bizzai-bot-message";
-        botTyping.textContent = "Typing...";
-        messages.appendChild(botTyping);
+        const typing = document.createElement("div");
+        typing.className = "bizzai-chat-message bizzai-bot-message";
+        typing.textContent = "Typing...";
+        messages.appendChild(typing);
         messages.scrollTop = messages.scrollHeight;
 
         const messagePayload = {
@@ -234,16 +246,16 @@
         })
           .then((res) => res.json())
           .then((res) => {
-            messages.removeChild(botTyping);
+            messages.removeChild(typing);
             appendMessage("bot", res.reply || "No reply");
           })
           .catch(() => {
-            messages.removeChild(botTyping);
+            messages.removeChild(typing);
             appendMessage("bot", "⚠️ Could not connect to server.");
           });
       }
 
-      button.onclick = sendMessage;
+      sendBtn.onclick = sendMessage;
       input.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
           e.preventDefault();
