@@ -225,7 +225,7 @@
         <div class="bizzai-chat-input">
           <input type="text" placeholder="Type a message..." />
           <button class="bizzai-send-btn" title="Send">
-            <svg viewBox="0 0 21 21"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
           </button>
         </div>
         <div class="bizzai-chat-footer" style="display: flex; align-items: center; justify-content: center; gap: 6px;">
