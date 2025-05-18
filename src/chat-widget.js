@@ -56,18 +56,25 @@
       padding: 6px; /* increased */
     }
     .bizzai-clear-button svg {
-      width: 20px; /* increased */
-      height: 20px;
+      width: 21px; /* increased */
+      height: 21px;
       fill: var(--bizzai-color, #4CAF50);
     }
     .bizzai-close-button {
       background: transparent;
       border: none;
-      color: var(--bizzai-color, #4CAF50);
       cursor: pointer;
       font-size: 20px; /* increased */
-      margin-left: 10px;
-      padding: 6px; /* added for better click target */
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bizzai-color, #4CAF50);
+      padding: 6px; /* increased */
+    }
+    .bizzai-close-button svg {
+      width: 21px; /* increased */
+      height: 21px;
+      fill: var(--bizzai-color, #4CAF50);
     }
     .bizzai-chat-messages {
       flex: 1;
@@ -203,16 +210,22 @@
           <span>${headerText}</span>
           <div>
             <button class="bizzai-clear-button" title="Clear chat">
-              <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm2 3h14v13H5V9zm5 2v9h2v-9h-2zm4 0v9h2v-9h-2z"/></svg>            
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                <path d="M9 3V4H4V6H5V20C5 21.1 5.9 22 7 22H17C18.1 22 19 21.1 19 20V6H20V4H15V3H9ZM7 6H17V20H7V6ZM9 8V18H11V8H9ZM13 8V18H15V8H13Z"/>
+              </svg>
+          </button>
+            <button class="bizzai-close-button" title="Close chat">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                <path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7a1 1 0 0 0-1.41 1.41L10.59 12l-4.89 4.89a1 1 0 1 0 1.41 1.41L12 13.41l4.89 4.89a1 1 0 0 0 1.41-1.41L13.41 12l4.89-4.89a1 1 0 0 0 0-1.4z"/>
+              </svg>
             </button>
-            <button class="bizzai-close-button" title="Close chat">✖</button>
           </div>
         </div>
         <div class="bizzai-chat-messages"></div>
         <div class="bizzai-chat-input">
           <input type="text" placeholder="Type a message..." />
           <button class="bizzai-send-btn" title="Send">
-            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            <svg viewBox="0 0 21 21"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
           </button>
         </div>
         <div class="bizzai-chat-footer" style="display: flex; align-items: center; justify-content: center; gap: 6px;">
