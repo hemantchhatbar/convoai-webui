@@ -104,11 +104,47 @@
       cursor: pointer;
     }
     .bizzai-typing-indicator {
-      display: inline-block;
-      width: 40px;
-      height: 18px;
-      background: url("data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMbHx7Ozs8fHx6ampoSEhMbGxuDg4CH/C05FVFNDQVBFMi4wAwEAAAAh+QQJCgAAACwAAAAAEAAQAAADLhi63P4wyklrE2MIOggZnAdOmGYJRbExbYpqyrbuC8fyTNZAAAh+QQJCgAAACwAAAAAEAAQAAADLhi63P7wCRHZnFVdIOggZnAdOmGZpqbqubOuC8fyTNZAAAh+QQJCgAAACwAAAAAEAAQAAADLhi63P6zDEHrnA1dIOggZnAdOmGZ7qbqubOuC8fyTNZAAA7") no-repeat center;
-      background-size: contain;
+      display: flex;
+      gap: 4px;
+      align-items: flex-end;
+      height: 24px;
+      padding: 0 10px;
+    }
+    .bizzai-typing-indicator div {
+      width: 6px;
+      height: 6px;
+      background-color: #888;
+      border-radius: 50%;
+      animation: bizzai-bounce 1.2s infinite ease-in-out both;
+    }
+    .bizzai-typing-indicator div:nth-child(1) {
+      animation-delay: -0.24s;
+    }
+    .bizzai-typing-indicator div:nth-child(2) {
+      animation-delay: -0.12s;
+    }
+    .bizzai-typing-indicator div:nth-child(3) {
+      animation-delay: 0;
+    }
+    @keyframes bizzai-bounce {
+      0%, 80%, 100% {
+        transform: scale(0);
+      } 
+      40% {
+        transform: scale(1);
+      }
+    }
+    .bizzai-chat-footer {
+      font-size: 11px;
+      color: #999;
+      text-align: center;
+      padding: 6px;
+      border-top: 1px solid #eee;
+      background: #fafafa;
+    }
+    .bizzai-chat-footer a {
+      color: #666;
+      text-decoration: none;
     }
   `;
   document.head.appendChild(style);
@@ -143,6 +179,7 @@
           <input type="text" placeholder="Type a message..." />
           <button class="bizzai-send-btn">Send</button>
         </div>
+        <div class="bizzai-chat-footer">Powered by <a href="https://convoai.chat" target="_blank" rel="noopener">ConvoAi.chat</a></div>
       `;
       document.body.appendChild(chatBox);
 
@@ -233,9 +270,14 @@
 
         const typing = document.createElement("div");
         typing.className = "bizzai-chat-message bizzai-bot-message";
-        const typingDots = document.createElement("div");
-        typingDots.className = "bizzai-typing-indicator";
-        typing.appendChild(typingDots);
+
+        const typingIndicator = document.createElement("div");
+        typingIndicator.className = "bizzai-typing-indicator";
+        for (let i = 0; i < 3; i++) {
+          typingIndicator.appendChild(document.createElement("div"));
+        }
+
+        typing.appendChild(typingIndicator);
         messages.appendChild(typing);
         messages.scrollTop = messages.scrollHeight;
 
