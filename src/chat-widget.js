@@ -66,9 +66,8 @@
       clear: both;
       word-wrap: break-word;
       position: relative;
-      display: flex;              /* Ensures layout inside the bubble */
-      flex-direction: column;    /* Stack text and timestamp */
-      align-items: flex-end;   /* Align all content to the left */
+      display: flex;
+      flex-direction: column;
       font-size: 14px;
     }
     .bizzai-user-message {
@@ -103,6 +102,13 @@
       border: none;
       padding: 10px 16px;
       cursor: pointer;
+    }
+    .bizzai-typing-indicator {
+      display: inline-block;
+      width: 40px;
+      height: 18px;
+      background: url("data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMbHx7Ozs8fHx6ampoSEhMbGxuDg4CH/C05FVFNDQVBFMi4wAwEAAAAh+QQJCgAAACwAAAAAEAAQAAADLhi63P4wyklrE2MIOggZnAdOmGYJRbExbYpqyrbuC8fyTNZAAAh+QQJCgAAACwAAAAAEAAQAAADLhi63P7wCRHZnFVdIOggZnAdOmGZpqbqubOuC8fyTNZAAAh+QQJCgAAACwAAAAAEAAQAAADLhi63P6zDEHrnA1dIOggZnAdOmGZ7qbqubOuC8fyTNZAAA7") no-repeat center;
+      background-size: contain;
     }
   `;
   document.head.appendChild(style);
@@ -161,9 +167,13 @@
         );
       }
 
+      function uuidToNumber(uuid) {
+        return parseInt(uuid.replace(/\D/g, "").slice(0, 15), 10);
+      }
+
       let userId = localStorage.getItem("bizzai-user-id");
       if (!userId) {
-        userId = uuidv4();
+        userId = uuidToNumber(uuidv4());
         localStorage.setItem("bizzai-user-id", userId);
       }
 
@@ -223,7 +233,9 @@
 
         const typing = document.createElement("div");
         typing.className = "bizzai-chat-message bizzai-bot-message";
-        typing.textContent = "Typing...";
+        const typingDots = document.createElement("div");
+        typingDots.className = "bizzai-typing-indicator";
+        typing.appendChild(typingDots);
         messages.appendChild(typing);
         messages.scrollTop = messages.scrollHeight;
 
@@ -247,7 +259,7 @@
           .then((res) => res.json())
           .then((res) => {
             messages.removeChild(typing);
-            appendMessage("bot", res.reply || "No reply");
+            appendMessage("bot", res.data.ReplyText || "No reply");
           })
           .catch(() => {
             messages.removeChild(typing);
