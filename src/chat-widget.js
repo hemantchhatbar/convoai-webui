@@ -24,7 +24,7 @@
       width: var(--bizzai-width, 320px);
       height: var(--bizzai-height, 400px);
       border: 1px solid #ccc;
-      border-radius: 10px;
+      border-radius: 20px;
       background: white;
       display: none;
       flex-direction: column;
@@ -34,36 +34,40 @@
       z-index: 9999;
     }
     .bizzai-chat-header {
-      background: var(--bizzai-color, #4CAF50);
-      color: white;
-      padding: 10px;
-      font-weight: bold;
+      background: white;
+      color: var(--bizzai-color, #4CAF50);
+      padding: 14px 10px;
+      font-weight: 600;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-bottom: 1px solid #ddd;
+      height: 60px; /* slightly increased header height */
     }
     .bizzai-clear-button {
       background: transparent;
       border: none;
-      color: white;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 20px; /* increased */
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      color: var(--bizzai-color, #4CAF50);
+      padding: 6px; /* increased */
     }
     .bizzai-clear-button svg {
-      width: 16px;
-      height: 16px;
-      fill: white;
+      width: 20px; /* increased */
+      height: 20px;
+      fill: var(--bizzai-color, #4CAF50);
     }
     .bizzai-close-button {
       background: transparent;
       border: none;
-      color: white;
+      color: var(--bizzai-color, #4CAF50);
       cursor: pointer;
-      font-size: 16px;
-      margin-left: 8px;
+      font-size: 20px; /* increased */
+      margin-left: 10px;
+      padding: 6px; /* added for better click target */
     }
     .bizzai-chat-messages {
       flex: 1;
@@ -119,7 +123,7 @@
       height: 40px;
       margin: 6px;
       border-radius: 50%;
-      background: var(--bizzai-color, #4CAF50);
+      background: white;
       color: white;
       border: none;
       cursor: pointer;
@@ -130,7 +134,7 @@
     .bizzai-chat-input button svg {
       width: 20px;
       height: 20px;
-      fill: white;
+      fill: var(--bizzai-color, #4CAF50);
     }
     .bizzai-typing-indicator {
       display: flex;
