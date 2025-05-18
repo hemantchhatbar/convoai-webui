@@ -102,6 +102,14 @@
       border: none;
       padding: 10px 16px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bizzai-chat-input button svg {
+      width: 20px;
+      height: 20px;
+      fill: white;
     }
     .bizzai-typing-indicator {
       display: flex;
@@ -177,7 +185,9 @@
         <div class="bizzai-chat-messages"></div>
         <div class="bizzai-chat-input">
           <input type="text" placeholder="Type a message..." />
-          <button class="bizzai-send-btn">Send</button>
+          <button class="bizzai-send-btn" title="Send">
+            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+          </button>
         </div>
         <div class="bizzai-chat-footer">Powered by <a href="https://convoai.chat" target="_blank" rel="noopener">ConvoAi.chat</a></div>
       `;
@@ -265,7 +275,6 @@
 
         const timestamp = getTimeStamp();
         appendMessage("user", text, timestamp);
-
         input.value = "";
 
         const typing = document.createElement("div");
@@ -301,7 +310,7 @@
           .then((res) => res.json())
           .then((res) => {
             messages.removeChild(typing);
-            appendMessage("bot", res.data.ReplyText || "No reply");
+            appendMessage("bot", res.data?.ReplyText || "No reply");
           })
           .catch(() => {
             messages.removeChild(typing);
