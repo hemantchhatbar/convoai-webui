@@ -3,8 +3,8 @@
   style.innerHTML = `
     .bizzai-chat-button {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      bottom: 30px;
+      right: 30px;
       z-index: 9999;
       width: 60px;
       height: 60px;
@@ -42,13 +42,28 @@
       justify-content: space-between;
       align-items: center;
     }
-    .bizzai-clear-button, .bizzai-close-button {
+    .bizzai-clear-button {
       background: transparent;
       border: none;
       color: white;
       cursor: pointer;
-      font-size: 18px;
-      margin-left: 6px;
+      font-size: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bizzai-clear-button svg {
+      width: 16px;
+      height: 16px;
+      fill: white;
+    }
+    .bizzai-close-button {
+      background: transparent;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      margin-left: 8px;
     }
     .bizzai-chat-messages {
       flex: 1;
@@ -183,7 +198,9 @@
         <div class="bizzai-chat-header">
           <span>${headerText}</span>
           <div>
-            <button class="bizzai-clear-button" title="Clear chat">🗑️</button>
+            <button class="bizzai-clear-button" title="Clear chat">
+              <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm2 3h14v13H5V9zm5 2v9h2v-9h-2zm4 0v9h2v-9h-2z"/></svg>            
+            </button>
             <button class="bizzai-close-button" title="Close chat">✖</button>
           </div>
         </div>
