@@ -88,6 +88,8 @@
     .bizzai-chat-input {
       display: flex;
       border-top: 1px solid #ddd;
+      border-radius: 0 0 10px 10px;
+      overflow: hidden;
     }
     .bizzai-chat-input input {
       flex: 1;
@@ -97,10 +99,13 @@
       outline: none;
     }
     .bizzai-chat-input button {
+      width: 40px;
+      height: 40px;
+      margin: 6px;
+      border-radius: 50%;
       background: var(--bizzai-color, #4CAF50);
       color: white;
       border: none;
-      padding: 10px 16px;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -192,7 +197,7 @@
         <div class="bizzai-chat-footer" style="display: flex; align-items: center; justify-content: center; gap: 6px;">
           <span>Powered by</span>
           <a href="https://convoai.chat" target="_blank" rel="noopener" style="display: inline-flex; align-items: center;">
-            <img src="https://hemantchhatbar.github.io/convoai-webui/dist/ConvoAi.svg" alt="Logo" style="height: 16px;" />
+            <img src="https://hemantchhatbar.github.io/convoai-webui/static/ConvoAi.svg" alt="Logo" style="height: 16px;" />
           </a>
         </div>
       `;
