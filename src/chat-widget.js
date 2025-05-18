@@ -189,7 +189,12 @@
             <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
           </button>
         </div>
-        <div class="bizzai-chat-footer">Powered by <a href="https://convoai.chat" target="_blank" rel="noopener">ConvoAi.chat</a></div>
+        <div class="bizzai-chat-footer" style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <span>Powered by</span>
+          <a href="https://convoai.chat" target="_blank" rel="noopener" style="display: inline-flex; align-items: center;">
+            <img src="https://hemantchhatbar.github.io/convoai-webui/dist/ConvoAi.svg" alt="Logo" style="height: 16px;" />
+          </a>
+        </div>
       `;
       document.body.appendChild(chatBox);
 
