@@ -49,6 +49,14 @@
       cursor: pointer;
       font-size: 14px;
     }
+    .bizzai-close-button {
+      background: transparent;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+      margin-left: 8px;
+    }
     .bizzai-chat-messages {
       flex: 1;
       padding: 10px;
@@ -184,8 +192,11 @@
       chatBox.className = "bizzai-chat-box";
       chatBox.innerHTML = `
         <div class="bizzai-chat-header">
-          ${headerText}
-          <button class="bizzai-clear-button">Clear</button>
+          <span>${headerText}</span>
+          <div>
+            <button class="bizzai-clear-button">Clear</button>
+            <button class="bizzai-close-button" title="Close chat">✖</button>
+          </div>
         </div>
         <div class="bizzai-chat-messages"></div>
         <div class="bizzai-chat-input">
@@ -207,12 +218,17 @@
       const input = chatBox.querySelector("input");
       const sendBtn = chatBox.querySelector(".bizzai-send-btn");
       const clearBtn = chatBox.querySelector(".bizzai-clear-button");
+      const closeBtn = chatBox.querySelector(".bizzai-close-button");
 
       chatButton.onclick = () => {
-        const isOpen = chatBox.style.display === "flex";
-        chatBox.style.display = isOpen ? "none" : "flex";
-        chatButton.innerText = isOpen ? "💬" : "✖";
-        if (!isOpen) renderStoredMessages();
+        chatBox.style.display = "flex";
+        chatButton.style.display = "none";
+        renderStoredMessages();
+      };
+
+      closeBtn.onclick = () => {
+        chatBox.style.display = "none";
+        chatButton.style.display = "block";
       };
 
       function uuidv4() {
@@ -265,7 +281,7 @@
         save = true
       ) {
         const msg = document.createElement("div");
-        msg.className = `bizzai-chat-message bizzai-${sender}-message`;
+        msg.className = "bizzai-chat-message bizzai-" + sender + "-message";
         msg.textContent = text;
 
         const time = document.createElement("div");
@@ -292,9 +308,8 @@
 
         const typingIndicator = document.createElement("div");
         typingIndicator.className = "bizzai-typing-indicator";
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 3; i++)
           typingIndicator.appendChild(document.createElement("div"));
-        }
 
         typing.appendChild(typingIndicator);
         messages.appendChild(typing);
