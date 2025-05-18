@@ -19,7 +19,7 @@
     }
     .bizzai-chat-box {
       position: fixed;
-      bottom: 90px;
+      bottom: 20px;
       right: 20px;
       width: var(--bizzai-width, 320px);
       height: var(--bizzai-height, 400px);
@@ -42,20 +42,13 @@
       justify-content: space-between;
       align-items: center;
     }
-    .bizzai-clear-button {
-      background: transparent;
-      border: none;
-      color: white;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    .bizzai-close-button {
+    .bizzai-clear-button, .bizzai-close-button {
       background: transparent;
       border: none;
       color: white;
       cursor: pointer;
       font-size: 18px;
-      margin-left: 8px;
+      margin-left: 6px;
     }
     .bizzai-chat-messages {
       flex: 1;
@@ -148,12 +141,8 @@
       animation-delay: 0;
     }
     @keyframes bizzai-bounce {
-      0%, 80%, 100% {
-        transform: scale(0);
-      } 
-      40% {
-        transform: scale(1);
-      }
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1); }
     }
     .bizzai-chat-footer {
       font-size: 11px;
@@ -194,7 +183,7 @@
         <div class="bizzai-chat-header">
           <span>${headerText}</span>
           <div>
-            <button class="bizzai-clear-button">Clear</button>
+            <button class="bizzai-clear-button" title="Clear chat">🗑️</button>
             <button class="bizzai-close-button" title="Close chat">✖</button>
           </div>
         </div>
@@ -227,10 +216,11 @@
       };
 
       closeBtn.onclick = () => {
-        chatBox.style.display = "none";
         chatButton.style.display = "block";
+        chatBox.style.display = "none";
       };
 
+      // UUID helpers
       function uuidv4() {
         return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
           (
@@ -239,7 +229,6 @@
           ).toString(16)
         );
       }
-
       function uuidToNumber(uuid) {
         return parseInt(uuid.replace(/\D/g, "").slice(0, 15), 10);
       }
