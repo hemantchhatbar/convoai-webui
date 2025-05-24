@@ -182,6 +182,20 @@
       color: #666;
       text-decoration: none;
     }
+    @media (max-width: 600px) {
+      .bizzai-chat-box {
+      bottom: 0 !important;
+      right: 0 !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      border-radius: 0 !important;
+      border: none !important;
+      max-width: none !important;
+      max-height: none !important;
+      }
+    }
   `;
   document.head.appendChild(style);
 
