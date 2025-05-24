@@ -115,7 +115,6 @@
     .bizzai-chat-input {
       display: flex;
       border-top: 1px solid #ddd;
-      border-radius: 0 0 10px 10px;
       overflow: hidden;
     }
     .bizzai-chat-input input {
@@ -209,7 +208,7 @@
       top: 0 !important;
       left: 0 !important;
       width: 100vw !important;
-      height: 95vh !important;
+      height: 100vh !important;
       border-radius: 0 !important;
       border: none !important;
       max-width: none !important;
@@ -223,7 +222,8 @@
 
       .bizzai-chat-footer-mobile {
       display: flex !important;
-
+      }
+      
       .bizzai-chat-footer {
       display: none;
       }
@@ -235,7 +235,7 @@
       right: 0 !important;
       bottom: 0 !important;
       width: 100vw !important;
-      height: 95vh !important;
+      height: 100vh !important;
       border-radius: 0 !important;
       border: none !important;
       max-width: none !important;
@@ -253,6 +253,7 @@
 
       .bizzai-chat-footer {
       display: none;
+      }
     }
   `;
   document.head.appendChild(style);
