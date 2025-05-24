@@ -184,7 +184,7 @@
     }
     @media (max-width: 600px) {
       .bizzai-chat-box {
-      bottom: 0 !important;
+      bottom: 20 !important;
       right: 0 !important;
       top: 0 !important;
       left: 0 !important;
@@ -212,7 +212,7 @@
       top: 0 !important;
       left: 0 !important;
       right: 0 !important;
-      bottom: 0 !important;
+      bottom: 20 !important;
       width: 100vw !important;
       height: 100vh !important;
       border-radius: 0 !important;
