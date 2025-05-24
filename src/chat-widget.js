@@ -208,7 +208,6 @@
       top: 0 !important;
       left: 0 !important;
       width: 100vw !important;
-      height: 100vh !important;
       border-radius: 0 !important;
       border: none !important;
       max-width: none !important;
@@ -235,7 +234,6 @@
       right: 0 !important;
       bottom: 0 !important;
       width: 100vw !important;
-      height: 100vh !important;
       border-radius: 0 !important;
       border: none !important;
       max-width: none !important;
@@ -459,19 +457,20 @@
         messages.innerHTML = "";
       };
 
-      // // Dynamically adjust height for mobile to avoid overlap
-      // function adjustChatBoxHeight() {
-      //   if (window.innerWidth <= 1024) {
-      //     mobileHeight = window.innerHeight - 27;
-      //     chatBox.style.height = `${mobileHeight}px`;
-      //     console.log("mobileHeight : ", mobileHeight);
-      //   } else {
-      //     chatBox.style.height = height;
-      //   }
-      // }
+      // Dynamically adjust height for mobile to avoid overlap
+      function adjustChatBoxHeight() {
+        if (window.innerWidth <= 1024) {
+          mobileHeight = window.innerHeight - 40;
+          chatBox.style.height = `${mobileHeight}px`;
+          // console.log("mobileHeight : ", mobileHeight);
+        } else {
+          chatBox.style.height = height;
+        }
+        // console.log("window.innerHeight : ", window.innerHeight);
+      }
 
-      // adjustChatBoxHeight();
-      // window.addEventListener("resize", adjustChatBoxHeight);
+      adjustChatBoxHeight();
+      window.addEventListener("resize", adjustChatBoxHeight);
     },
   };
 
