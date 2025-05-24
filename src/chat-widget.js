@@ -171,6 +171,10 @@
       40% { transform: scale(1); }
     }
     .bizzai-chat-footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
       font-size: 11px;
       color: #999;
       text-align: center;
@@ -178,6 +182,7 @@
       border-top: 1px solid #eee;
       background: #fafafa;
     }
+
     .bizzai-chat-footer a {
       color: #666;
       text-decoration: none;
@@ -189,7 +194,7 @@
       top: 0 !important;
       left: 0 !important;
       width: 100vw !important;
-      height: 90vh !important;
+      height: 100vh !important;
       border-radius: 0 !important;
       border: none !important;
       max-width: none !important;
@@ -214,7 +219,7 @@
       right: 0 !important;
       bottom: 0 !important;
       width: 100vw !important;
-      height: 90vh !important;
+      height: 100vh !important;
       border-radius: 0 !important;
       border: none !important;
       max-width: none !important;
@@ -278,9 +283,9 @@
             <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
           </button>
         </div>
-        <div class="bizzai-chat-footer" style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <div class="bizzai-chat-footer">
           <span>Powered by</span>
-          <a href="https://convoai.chat" target="_blank" rel="noopener" style="display: inline-flex; align-items: center;">
+          <a href="https://convoai.chat" target="_blank" rel="noopener">
             <img src="https://hemantchhatbar.github.io/convoai-webui/static/ConvoAi.svg" alt="Logo" style="height: 16px;" />
           </a>
         </div>
@@ -430,18 +435,19 @@
         messages.innerHTML = "";
       };
 
-      //   // Dynamically adjust height for mobile to avoid overlap
-      //   function adjustChatBoxHeight() {
-      //     if (window.innerWidth <= 1024) {
-      //       mobileHeight = window.innerHeight - 27;
-      //       chatBox.style.height = `${mobileHeight}px`;
-      //     } else {
-      //       chatBox.style.height = height;
-      //     }
-      //   }
+      // Dynamically adjust height for mobile to avoid overlap
+      function adjustChatBoxHeight() {
+        if (window.innerWidth <= 1024) {
+          mobileHeight = window.innerHeight - 27;
+          chatBox.style.height = `${mobileHeight}px`;
+          console.log("mobileHeight : ", mobileHeight);
+        } else {
+          chatBox.style.height = height;
+        }
+      }
 
-      //   adjustChatBoxHeight();
-      //   window.addEventListener("resize", adjustChatBoxHeight);
+      adjustChatBoxHeight();
+      window.addEventListener("resize", adjustChatBoxHeight);
     },
   };
 
