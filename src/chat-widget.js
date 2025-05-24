@@ -433,7 +433,8 @@
       // Dynamically adjust height for mobile to avoid overlap
       function adjustChatBoxHeight() {
         if (window.innerWidth <= 1024) {
-          chatBox.style.height = `${window.innerHeight}px`;
+          mobileHeight = window.innerHeight - 27;
+          chatBox.style.height = `${mobileHeight}px`;
         } else {
           chatBox.style.height = height;
         }
