@@ -195,6 +195,17 @@
       max-width: none !important;
       max-height: none !important;
       }
+      
+      .bizzai-chat-input {
+      flex-shrink: 0;
+      padding: 0 6px;
+      background: #fff;
+      }
+
+      .bizzai-chat-footer {
+      flex-shrink: 0;
+      background: #fafafa;
+      }
     }
     @media (max-width: 1024px) {
       .bizzai-chat-box {
@@ -209,7 +220,18 @@
       max-width: none !important;
       max-height: none !important;
       }
-    }
+
+      .bizzai-chat-input {
+      flex-shrink: 0;
+      padding: 0 6px;
+      background: #fff;
+      }
+
+      .bizzai-chat-footer {
+      flex-shrink: 0;
+      background: #fafafa;
+      }
+      }
   `;
   document.head.appendChild(style);
 
