@@ -184,7 +184,7 @@
     }
     @media (max-width: 600px) {
       .bizzai-chat-box {
-      bottom: 20 !important;
+      bottom: 0 !important;
       right: 0 !important;
       top: 0 !important;
       left: 0 !important;
@@ -429,6 +429,18 @@
         messageHistory = [];
         messages.innerHTML = "";
       };
+
+      // Dynamically adjust height for mobile to avoid overlap
+      function adjustChatBoxHeight() {
+        if (window.innerWidth <= 1024) {
+          chatBox.style.height = `${window.innerHeight}px`;
+        } else {
+          chatBox.style.height = height;
+        }
+      }
+
+      adjustChatBoxHeight();
+      window.addEventListener("resize", adjustChatBoxHeight);
     },
   };
 
