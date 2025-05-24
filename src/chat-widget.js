@@ -182,8 +182,23 @@
       border-top: 1px solid #eee;
       background: #fafafa;
     }
-
     .bizzai-chat-footer a {
+      color: #666;
+      text-decoration: none;
+    }
+    .bizzai-chat-footer-mobile {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #999;
+      text-align: center;
+      padding: 6px;
+      border-top: 1px solid #eee;
+      background: #fafafa;
+    }
+    .bizzai-chat-footer-mobile a {
       color: #666;
       text-decoration: none;
     }
@@ -207,9 +222,11 @@
       background: #fff;
       }
 
+      .bizzai-chat-footer-mobile {
+      display: flex !important;
+
       .bizzai-chat-footer {
-      flex-shrink: 0;
-      background: #fafafa;
+      display: none;
       }
     }
     @media (max-width: 1024px) {
@@ -232,11 +249,13 @@
       background: #fff;
       }
 
+      .bizzai-chat-footer-mobile {
+      display: flex !important;
+      }
+
       .bizzai-chat-footer {
-      flex-shrink: 0;
-      background: #fafafa;
-      }
-      }
+      display: none;
+    }
   `;
   document.head.appendChild(style);
 
@@ -277,6 +296,12 @@
           </div>
         </div>
         <div class="bizzai-chat-messages"></div>
+        <div class="bizzai-chat-footer-mobile">
+          <span>Powered by</span>
+          <a href="https://convoai.chat" target="_blank" rel="noopener">
+            <img src="https://hemantchhatbar.github.io/convoai-webui/static/ConvoAi.svg" alt="Logo" style="height: 16px;" />
+          </a>
+        </div>
         <div class="bizzai-chat-input">
           <input type="text" placeholder="Type a message..." />
           <button class="bizzai-send-btn" title="Send">
