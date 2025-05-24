@@ -218,7 +218,6 @@
       
       .bizzai-chat-input {
       flex-shrink: 0;
-      padding: 0 6px;
       background: #fff;
       }
 
@@ -245,7 +244,6 @@
 
       .bizzai-chat-input {
       flex-shrink: 0;
-      padding: 0 6px;
       background: #fff;
       }
 
