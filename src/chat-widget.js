@@ -382,7 +382,12 @@
       ) {
         const msg = document.createElement("div");
         msg.className = "bizzai-chat-message bizzai-" + sender + "-message";
-        msg.textContent = text;
+        msg.innerHTML = text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\n/g, "<br>")
+          .replace(/ {2}/g, " &nbsp;");
 
         const time = document.createElement("div");
         time.className = "bizzai-chat-timestamp";
