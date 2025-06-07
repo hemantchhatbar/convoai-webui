@@ -345,10 +345,6 @@
       }
 
       let userId = localStorage.getItem("bizzai-user-id");
-      if (!userId) {
-        userId = uuidToNumber(uuidv4());
-        localStorage.setItem("bizzai-user-id", userId);
-      }
 
       let messageHistory = [];
 
@@ -401,6 +397,12 @@
       }
 
       function sendMessage() {
+        if (!userId) {
+          // console.log("sendMessage : generating userId");
+          userId = uuidToNumber(uuidv4());
+          localStorage.setItem("bizzai-user-id", userId);
+        }
+
         const text = input.value.trim();
         if (!text) return;
 
@@ -459,6 +461,7 @@
       clearBtn.onclick = () => {
         localStorage.removeItem("bizzai-history");
         localStorage.removeItem("bizzai-user-id");
+        userId = null;
         messageHistory = [];
         messages.innerHTML = "";
       };
