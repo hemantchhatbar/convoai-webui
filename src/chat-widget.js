@@ -458,6 +458,7 @@
 
       clearBtn.onclick = () => {
         localStorage.removeItem("bizzai-history");
+        localStorage.removeItem("bizzai-user-id");
         messageHistory = [];
         messages.innerHTML = "";
       };
