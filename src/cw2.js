@@ -266,6 +266,7 @@ const BizzAIChat = {
     headerText = "Chat with us",
     width = "320px",
     height = "400px",
+    apiUrl = "https://massmessaging-gen2-339362962237.asia-south1.run.app",
   }) {
     document.documentElement.style.setProperty("--bizzai-color", color);
     document.documentElement.style.setProperty("--bizzai-width", width);
@@ -498,45 +499,44 @@ const BizzAIChat = {
     adjustChatBoxHeight();
     window.addEventListener("resize", adjustChatBoxHeight);
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAom_3SUvGKojZ-QDrZUQd1Q_5-7XD8grk",
-      authDomain: "testing-tbewma.firebaseapp.com",
-      databaseURL:
-        "https://testing-tbewma-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "testing-tbewma",
-      storageBucket: "testing-tbewma.firebasestorage.app",
-      messagingSenderId: "339362962237",
-      appId: "1:339362962237:web:9ae946dab151d9be844354",
-      measurementId: "G-LCT3D6299W",
-    };
+    function fetchFirebaseConfigAndInit() {
+      if (!userId) {
+        userId = uuidToNumber(uuidv4());
+        localStorage.setItem("bizzai-user-id", userId);
+      }
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    console.log("fcmcw-initializeApp");
-    const db = getDatabase(app);
+      fetch(`${apiUrl}/GetFirebaseConfig`)
+        .then((res) => res.json())
+        .then((firebaseConfig) => {
+          const app = initializeApp(firebaseConfig);
+          console.log("cw2-initializeApp");
+          const db = getDatabase(app);
+          const messagesRef = ref(db, `convoai/chat_notifications/${userId}`);
 
-    // Listen to incoming agent messages
-    const messagesRef = ref(db, `convoai/chat_notifications/${userId}`);
-
-    function sShot(snapshot) {
-      setTimeout(() => {
-        //   console.log("snapshot.key : ", snapshot.key);
-        const msg = snapshot.val();
-        //   console.log("msg : ", msg);
-        //   console.log("msg.id : ", msg.id);
-        if (!snapshotKeyHistory.includes(snapshot.key)) {
-          console.log("snapshot.key is new: ", snapshot.key);
-          saveSnapshotKey(snapshot.key);
-          if (chatBox.style.display === "none") {
-            saveMessage("bot", msg.message || "No reply", getTimeStamp());
-          } else {
-            appendMessage("bot", msg.message || "No reply");
+          function sShot(snapshot) {
+            setTimeout(() => {
+              const msg = snapshot.val();
+              if (!snapshotKeyHistory.includes(snapshot.key)) {
+                console.log("snapshot.key is new: ", snapshot.key);
+                saveSnapshotKey(snapshot.key);
+                if (chatBox.style.display === "none") {
+                  saveMessage("bot", msg.message || "No reply", getTimeStamp());
+                } else {
+                  appendMessage("bot", msg.message || "No reply");
+                }
+              }
+            }, 2000);
           }
-        }
-      }, 2000);
+
+          onChildAdded(messagesRef, sShot);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch Firebase config:", err);
+        });
     }
 
-    onChildAdded(messagesRef, sShot);
+    // 🔃 Kick off Firebase setup
+    fetchFirebaseConfigAndInit();
   },
 };
 
