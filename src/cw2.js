@@ -505,11 +505,14 @@ const BizzAIChat = {
         localStorage.setItem("bizzai-user-id", userId);
       }
 
+      // console.log("apiUrl : ", apiUrl);
+
       fetch(`${apiUrl}/GetFirebaseConfig`)
         .then((res) => res.json())
-        .then((firebaseConfig) => {
-          const app = initializeApp(firebaseConfig);
-          console.log("cw2-initializeApp");
+        .then((data) => {
+          // console.log("cw2-data.FirebaseConfig : ", data.FirebaseConfig);
+          const app = initializeApp(data.FirebaseConfig);
+          // console.log("cw2-initializeApp");
           const db = getDatabase(app);
           const messagesRef = ref(db, `convoai/chat_notifications/${userId}`);
 
