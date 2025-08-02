@@ -266,7 +266,7 @@ const BizzAIChat = {
     headerText = "Chat with us",
     width = "320px",
     height = "400px",
-    apiUrl = "https://massmessaging-gen2-339362962237.asia-south1.run.app",
+    apiUrl = "https://massmessaging-gen2-842028838923.asia-south1.run.app",
   }) {
     document.documentElement.style.setProperty("--bizzai-color", color);
     document.documentElement.style.setProperty("--bizzai-width", width);
