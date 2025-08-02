@@ -1,5 +1,5 @@
 const { initializeApp } = require("firebase/app");
-const { getDatabase, ref, onChildAdded } = require("firebase/database");
+const { getDatabase, ref, onChildAdded, off } = require("firebase/database");
 
 const style = document.createElement("style");
 style.innerHTML = `
@@ -477,11 +477,15 @@ const BizzAIChat = {
     });
 
     clearBtn.onclick = () => {
+      stopFirebaseListener();
       localStorage.removeItem("bizzai-history");
       localStorage.removeItem("bizzai-user-id");
+      localStorage.removeItem("bizzai-snapshot-key");
       userId = null;
       messageHistory = [];
+      snapshotKeyHistory = [];
       messages.innerHTML = "";
+      fetchFirebaseConfigAndInit();
     };
 
     // Dynamically adjust height for mobile to avoid overlap
@@ -499,6 +503,15 @@ const BizzAIChat = {
     adjustChatBoxHeight();
     window.addEventListener("resize", adjustChatBoxHeight);
 
+    let app;
+    let db;
+    let messagesRef;
+
+    function stopFirebaseListener() {
+      off(messagesRef);
+      console.log("Stopped listening to Firebase.");
+    }
+
     function fetchFirebaseConfigAndInit() {
       if (!userId) {
         userId = uuidToNumber(uuidv4());
@@ -511,10 +524,10 @@ const BizzAIChat = {
         .then((res) => res.json())
         .then((data) => {
           // console.log("cw2-data.FirebaseConfig : ", data.FirebaseConfig);
-          const app = initializeApp(data.FirebaseConfig);
+          app = initializeApp(data.FirebaseConfig);
           // console.log("cw2-initializeApp");
-          const db = getDatabase(app);
-          const messagesRef = ref(db, `convoai/chat_notifications/${userId}`);
+          db = getDatabase(app);
+          messagesRef = ref(db, `convoai/chat_notifications/${userId}`);
 
           function sShot(snapshot) {
             setTimeout(() => {
